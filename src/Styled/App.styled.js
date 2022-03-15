@@ -62,3 +62,10 @@ export const FilterLogo = styled.img`
     cursor: pointer;
 
 `;
+
+export const ListContainer = styled.div`
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+`;
+

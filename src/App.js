@@ -1,10 +1,11 @@
 import React from "react";
 import {HeaderContainer, Header, Logo, Profile, ProfileName,ProfileImage, RideNav, Nav
-, FilterLogo
+, FilterLogo , ListContainer
 } from "./Styled/App.styled";
 
 import logo from "./assets/logo.png";
 import filter from "./assets/filter.png";
+import List from "./Components/List";
 
 
 function App() {
@@ -88,6 +89,24 @@ function App() {
 
     },[rides]);
  
+    let [showFutureRides,setShowFutureRides] = React.useState(true);
+    let [showPastRides,setShowPastRides] = React.useState(false);
+
+    function futureRidesHandler(){
+      setShowFutureRides(true);
+      setShowPastRides(false);
+    }
+
+    function pastRidesHandler(){
+      setShowPastRides(true);
+      setShowFutureRides(false);
+    }
+
+    let styles = {
+      fontSize:"bold" ,
+      color:"#fff",
+      borderBottom: "2px solid #fff"
+    }
 
   return (
     <>
@@ -104,15 +123,49 @@ function App() {
     <Nav>
       <RideNav>
         <a>Nearest rides</a>
-        <a>Upcoming rides ({futureRides.length})</a>
-        <a>Past rides ({pastRides.length})</a>
+        <a style={showFutureRides ? styles : null} onClick={futureRidesHandler}>Upcoming rides ({futureRides.length})</a>
+        <a style={showPastRides ? styles : null} onClick={pastRidesHandler}>Past rides ({pastRides.length})</a>
       </RideNav>
       <FilterLogo src={filter} />
     </Nav>
 
-      <div>
-          <h1>LIST</h1>
-      </div>
+      <ListContainer>
+        {showFutureRides ? 
+        (
+          futureRides?.map((fr)=>{
+            
+            return <List key={fr.id} mapImage={fr.map_url}
+            originCode={fr.origin_station_code}
+            date={fr.date}
+            id={fr.id}
+            sp={fr.station_path}
+            distance={0}
+            city={fr.city}
+            state={fr.state}
+            />
+
+          })
+        ) : null }
+          
+
+        {showPastRides ? 
+        (
+          pastRides?.map((fr)=>{
+            
+            return <List key={fr.id} mapImage={fr.map_url}
+            originCode={fr.origin_station_code}
+            date={fr.date}
+            id={fr.id}
+            sp={fr.station_path}
+            distance={0}
+            city={fr.city}
+            state={fr.state}
+            />
+
+          })
+        ) : null }
+
+      </ListContainer>
     </>
   );
 }
